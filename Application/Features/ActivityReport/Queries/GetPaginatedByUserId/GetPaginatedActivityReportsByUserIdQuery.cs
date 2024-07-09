@@ -6,8 +6,6 @@ using Core.Application.Pipelines.Authorization;
 using Core.Persistence.Paging;
 using Core.Security.Constants;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
 namespace Application.Features.ActivityReport.Queries.GetAllPaginatedByUserId
 {
@@ -43,13 +41,14 @@ namespace Application.Features.ActivityReport.Queries.GetAllPaginatedByUserId
             {
                 var user = await _userService.GetAuthenticatedUserAsync();
                 await _businessRules.SelectedEntityIsAvailableAsync(entity: user);
-                Expression<Func<Domain.Entities.ActivityReport, bool>> prediacte = x => x.UserId == user.Id;
-                var result = await _activityReportRepository.GetListAsync(
-                    predicate: x => x.UserId == user.Id,
-                    include: x => x.Include(i => i.ActivityType),
-                    index: request.PageIndex,
-                    size: request.PageSize,
-                    enableTracking: false);
+                var result = await _activityReportRepository.GetPaginatedFilteredUserActivityReportAsync(
+                    pageIndex: request.PageIndex,
+                    pageSize: request.PageSize,
+                    userId:user.Id,
+                    activityTypeId:request.ActivityTypeId,
+                    startDate:request.StartDate,
+                    endDate:request.EndDate);
+
                 List<GetPaginatedActivityReportsByUserIdResponse> activityReports = _mapper.Map<List<GetPaginatedActivityReportsByUserIdResponse>>(result.Items);
 
                 return new Paginate<GetPaginatedActivityReportsByUserIdResponse>(activityReports.AsQueryable(), result.Pagination);

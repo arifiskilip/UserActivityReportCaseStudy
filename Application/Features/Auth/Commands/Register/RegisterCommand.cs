@@ -42,7 +42,7 @@ namespace Application.Features.Auth.Commands.Register
                     enableTracking: false,
                     cancellationToken: cancellationToken);
 
-                _businessRules.IsSelectedEntityAvailable(checkUser);
+                await _businessRules.DuplicateEmailChechAsync(request.Email);
 
                 byte[] passwordHash, passwordSalt;
 

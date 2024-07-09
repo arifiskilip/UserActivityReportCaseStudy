@@ -4,7 +4,7 @@
     {
         Reading = 1,
         Swimming = 2,
-        Spor = 3,
+        Sport = 3,
         Cineme = 4
     }
 }
