@@ -38,8 +38,8 @@ namespace Application.Features.Auth.Commands.EmailVerified
                 var verificationCode = await _verificationCodeRepository.GetAsync(
                     predicate: x => x.UserId == user.Id && x.CodeTypeId == (int)CodeTypeEnum.EmailConfirm);
 
-                _rules.CheckVerificationCodeTime(verificationCode);
-                _rules.CheckVerificationCode(
+                await _rules.CheckVerificationCodeTimeAsync(verificationCode);
+                await _rules.CheckVerificationCodeAsync(
                     userVerificationCode: verificationCode.Code,
                     verificationCode: request.Code);
 

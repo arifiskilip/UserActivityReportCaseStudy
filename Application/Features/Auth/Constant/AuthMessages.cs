@@ -73,5 +73,12 @@
                 return "Şifre sıfırlama";
             }
         }
+        public static string PasswordChangeSuccessful
+        {
+            get
+            {
+                return "Şifre başarıyla güncellendi.";
+            }
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Application.Features.ActivityReport.Constant;
 using Application.Repositories;
+using Application.Services;
 using Core.Application.Rules;
 using Core.CrossCuttingConcers.Exceptions.Types;
 using Core.Domain;
@@ -10,10 +11,12 @@ namespace Application.Features.ActivityReport.Rules
     public class ActivityReportBusinessRules : BaseBusinessRules
     {
         private readonly IActivityReportRepository _activityReportRepository;
+        private readonly IActivityTypeService _activityTypeService;
 
-        public ActivityReportBusinessRules(IActivityReportRepository activityReportRepository)
+        public ActivityReportBusinessRules(IActivityReportRepository activityReportRepository, IActivityTypeService activityTypeService)
         {
             _activityReportRepository = activityReportRepository;
+            _activityTypeService = activityTypeService;
         }
         public async Task CheckTimeOfActivityAsync(DateTime date, int userId)
         {
@@ -30,23 +33,17 @@ namespace Application.Features.ActivityReport.Rules
             {
                 if (entity is null)
                 {
-                    throw new BusinessException(ActivityReportMessages.UserNotFound);
+                    throw new BusinessException(ActivityReportMessages.ActivityTypeNotFound);
                 }
             });
         }
         public async Task CheckActivityTypeIsAvailableAsync(int activityTypeId)
         {
-            await Task.Run(async () =>
+            var entity = await _activityTypeService.GetByIdAsync(id: activityTypeId);
+            if (entity is null)
             {
-                var result = await _activityReportRepository.GetAsync(
-                    predicate: x => x.ActivityType.Id == activityTypeId,
-                    include: x => x.Include(i => i.ActivityType),
-                    enableTracking: false);
-                if (result is null)
-                {
-                    throw new BusinessException(ActivityReportMessages.ActivityTypeNotFound);
-                }
-            });
+                throw new BusinessException(ActivityReportMessages.ActivityTypeNotFound);
+            }
         }
         public async Task UpdateDuplicatDateCheckAsync(DateTime date, int id)
         {

@@ -18,6 +18,7 @@ namespace Persistence.Repositories
             IQueryable<ActivityReport> query = Context.ActivityReports
                  .AsQueryable()
                  .AsNoTracking()
+                 .OrderByDescending(o=> o.Date)
                  .Include(i => i.ActivityType)
                  .Where(x => x.UserId == userId);
 
@@ -34,11 +35,6 @@ namespace Persistence.Repositories
             if (endDate.HasValue)
             {
                 query = query.Where(ai => ai.Date <= endDate.Value.Date.AddDays(1).AddTicks(-1));
-            }
-
-            if (!startDate.HasValue && !endDate.HasValue)
-            {
-                query = query.Where(ai => ai.Date >= DateTime.UtcNow);
             }
 
             return Paginate<ActivityReport>.Create(

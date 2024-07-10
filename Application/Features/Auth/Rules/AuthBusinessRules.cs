@@ -30,13 +30,16 @@ namespace Application.Features.Auth.Rules
             if (!check) throw new BusinessException(AuthMessages.UserNotFound);
         }
 
-        public void IsPasswordCorrectWhenLogin(User user, string password)
+        public async Task IsPasswordCorrectWhenLoginAsync(User user, string password)
         {
-            var check = HashingHelper.VerifyPasswordHash(password: password, passwordHash: user.PasswordHash, passwordSalt: user.PasswordSalt);
-            if (!check) throw new BusinessException(AuthMessages.UserEmailNotFound);
+            await Task.Run(() =>
+            {
+                var check = HashingHelper.VerifyPasswordHash(password: password, passwordHash: user.PasswordHash, passwordSalt: user.PasswordSalt);
+                if (!check) throw new BusinessException(AuthMessages.UserEmailNotFound);
+            });
         }
 
-        public async Task<User> UserEmailCheck(string email)
+        public async Task<User> UserEmailCheckAsync(string email)
         {
             var user = await _userRepository.GetAsync(
                 predicate: x => x.Email.ToLower() == email.ToLower(),
@@ -45,12 +48,15 @@ namespace Application.Features.Auth.Rules
             return user;
         }
 
-        public void CheckNewPasswordsMatch(string newPassword, string newPasswordAgain)
+        public async Task CheckNewPasswordsMatchAsync(string newPassword, string newPasswordAgain)
         {
-            if (newPassword != newPasswordAgain)
+            await Task.Run(() =>
             {
-                throw new BusinessException(AuthMessages.PasswordsDontMatch);
-            }
+                if (newPassword != newPasswordAgain)
+                {
+                    throw new BusinessException(AuthMessages.PasswordsDontMatch);
+                }
+            });
         }
 
         public async Task<string> GetUserEmailAsync(int userId)
@@ -64,28 +70,40 @@ namespace Application.Features.Auth.Rules
             throw new BusinessException(AuthMessages.UserNotFound);
         }
 
-        public void IsSelectedEntityAvailable(User? user)
+        public async Task IsSelectedEntityAvailableAsync(User? user)
         {
-            if (user == null) throw new BusinessException(AuthMessages.UserNotFound);
-        }
-        public void IsCurrentPasswordCorrect(User user, string currentPassword)
-        {
-            var check = HashingHelper.VerifyPasswordHash(currentPassword, user.PasswordHash, user.PasswordSalt);
-            if (!check) throw new BusinessException(AuthMessages.CurrentPasswordWrong);
-        }
-        public void CheckVerificationCodeTime(VerificationCode verificationCode)
-        {
-            if (!(verificationCode.ExpirationDate >= DateTime.Now))
+            await Task.Run(() =>
             {
-                throw new BusinessException(AuthMessages.VerificationCodeTimeout);
-            }
+                if (user == null) throw new BusinessException(AuthMessages.UserNotFound);
+            });
         }
-        public void CheckVerificationCode(string userVerificationCode, string verificationCode)
+        public async Task IsCurrentPasswordCorrectAsync(User user, string currentPassword)
         {
-            if (userVerificationCode != verificationCode)
+            await Task.Run(() =>
             {
-                throw new BusinessException(AuthMessages.IncorrectVerificationCode);
-            }
+                var check = HashingHelper.VerifyPasswordHash(currentPassword, user.PasswordHash, user.PasswordSalt);
+                if (!check) throw new BusinessException(AuthMessages.CurrentPasswordWrong);
+            });
+        }
+        public async Task CheckVerificationCodeTimeAsync(VerificationCode verificationCode)
+        {
+            await Task.Run(() =>
+            {
+                if (!(verificationCode.ExpirationDate >= DateTime.Now))
+                {
+                    throw new BusinessException(AuthMessages.VerificationCodeTimeout);
+                }
+            });
+        }
+        public async Task CheckVerificationCodeAsync(string userVerificationCode, string verificationCode)
+        {
+            await Task.Run(() =>
+            {
+                if (userVerificationCode != verificationCode)
+                {
+                    throw new BusinessException(AuthMessages.IncorrectVerificationCode);
+                }
+            });
         }
     }
 }

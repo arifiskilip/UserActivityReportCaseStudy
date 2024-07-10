@@ -24,6 +24,8 @@ namespace Persistence
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IVerificationCodeRepository, VerificationCodeRepository>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IActivityTypeRepository, ActivityTypeRepository>();
+            services.AddScoped<IActivityTypeService, ActivityTypeService>();
             return services;
         }
     }

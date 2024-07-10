@@ -29,8 +29,8 @@ namespace Application.Features.Auth.Commands.Login
 
             public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
             {
-                User user = await _authBusinessRules.UserEmailCheck(request.Email);
-                _authBusinessRules.IsPasswordCorrectWhenLogin(user, request.Password);
+                User user = await _authBusinessRules.UserEmailCheckAsync(request.Email);
+                await _authBusinessRules.IsPasswordCorrectWhenLoginAsync(user, request.Password);
 
                 AccessToken token = await _authService.CreateAccessToken(user: user);
                 LoginResponse response = _mapper.Map<LoginResponse>(user);

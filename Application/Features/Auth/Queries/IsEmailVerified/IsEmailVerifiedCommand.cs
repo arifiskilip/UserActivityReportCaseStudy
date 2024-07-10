@@ -24,7 +24,7 @@ namespace Application.Features.Auth.Queries.IsEmailVerified
             public async Task<IsEmailVerifiedResponse> Handle(IsEmailVerifiedCommand request, CancellationToken cancellationToken)
             {
                 var user = await _userService.GetAuthenticatedUserAsync();
-                _businessRules.IsSelectedEntityAvailable(user);
+                await _businessRules.IsSelectedEntityAvailableAsync(user);
                 return new()
                 {
                     IsEmailVerified = user.IsEmailVerified,
