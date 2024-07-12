@@ -1,6 +1,7 @@
 ﻿using Application.Features.ActivityReport.Commands.Add;
 using Application.Features.ActivityReport.Commands.Delete;
 using Application.Features.ActivityReport.Commands.Update;
+using Application.Features.ActivityReport.Queries.GetAllByUserId;
 using Application.Features.ActivityReport.Queries.GetAllPaginatedByUserId;
 using Application.Features.ActivityReport.Queries.GetById;
 using Microsoft.AspNetCore.Mvc;
@@ -35,6 +36,12 @@ namespace WebAPI.Controllers
         }
         [HttpGet]
         public async Task<IActionResult> GetPaginatedAndFilteredByUserId([FromQuery] GetPaginatedActivityReportsByUserIdQuery command)
+        {
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetFilteredByUserId([FromQuery] GetAllActivityReportsByUserIdQuery command)
         {
             var result = await _mediator.Send(command);
             return Ok(result);

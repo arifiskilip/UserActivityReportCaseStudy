@@ -1,5 +1,6 @@
 ﻿using Application.Features.ActivityReport.Commands.Add;
 using Application.Features.ActivityReport.Commands.Update;
+using Application.Features.ActivityReport.Queries.GetAllByUserId;
 using Application.Features.ActivityReport.Queries.GetAllPaginatedByUserId;
 using Application.Features.ActivityReport.Queries.GetById;
 using AutoMapper;
@@ -22,6 +23,8 @@ namespace Application.Features.ActivityReport.Profiles
             CreateMap<Domain.Entities.ActivityReport, GetPaginatedActivityReportsByUserIdResponse>()
                 .ForMember(src => src.ActivityTypeName, opt => opt.MapFrom(x => x.ActivityType.Name));
             CreateMap<Domain.Entities.ActivityReport, GetByIdActivityReportResponse>()
+               .ForMember(src => src.ActivityTypeName, opt => opt.MapFrom(x => x.ActivityType.Name));
+            CreateMap<Domain.Entities.ActivityReport, GetAllActivityReportsByUserIdResponse>()
                .ForMember(src => src.ActivityTypeName, opt => opt.MapFrom(x => x.ActivityType.Name));
         }
     }

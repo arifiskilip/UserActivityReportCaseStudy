@@ -7,5 +7,6 @@ namespace Application.Repositories
     public interface IActivityReportRepository : IAsyncRepository<ActivityReport, int>, IRepository<ActivityReport, int>
     {
         Task<IPaginate<ActivityReport>> GetPaginatedFilteredUserActivityReportAsync(int userId, int? activityTypeId, DateTime? startDate, DateTime? endDate, int pageSize, int pageIndex);
+        Task<IQueryable<ActivityReport>> GetFilteredUserActivityReportAsync(int userId, int? activityTypeId, DateTime? startDate, DateTime? endDate);
     }
 }

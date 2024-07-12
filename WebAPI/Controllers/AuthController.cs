@@ -1,7 +1,10 @@
 ﻿using Application.Features.Auth.Commands.EmailVerified;
 using Application.Features.Auth.Commands.Login;
+using Application.Features.Auth.Commands.PasswordResetCodeVerified;
 using Application.Features.Auth.Commands.Register;
+using Application.Features.Auth.Commands.UpdatePassword;
 using Application.Features.Auth.Queries.IsEmailVerified;
+using Application.Features.Auth.Queries.PasswordResetSendEmail;
 using Application.Features.Auth.Queries.SendVerificationCode;
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,12 +38,29 @@ namespace WebAPI.Controllers
             var result = await _mediator.Send(command);
             return Ok(result);
         }
+        [HttpGet]
+        public async Task<IActionResult> PasswordResetSendEmail([FromQuery] PasswordResetSendEmailQuery command)
+        {
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
         [HttpPost]
         public async Task<IActionResult> EmailVerified([FromBody] EmailVerifiedCommand command)
         {
             var result = await _mediator.Send(command);
             return Ok(result);
         }
-
+        [HttpPost]
+        public async Task<IActionResult> PasswordResetCodeVerified([FromBody] PasswordResetCodeVerifiedCommand command)
+        {
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdatePassword([FromBody] UpdatePasswordCommand command)
+        {
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
     }
 }
