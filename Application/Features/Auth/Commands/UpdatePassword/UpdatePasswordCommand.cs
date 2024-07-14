@@ -32,7 +32,6 @@ namespace Application.Features.Auth.Commands.UpdatePassword
             public async Task<UpdatePasswordResponse> Handle(UpdatePasswordCommand request, CancellationToken cancellationToken)
             {
 
-                // Kullanıcı ID'sini HttpContext'ten al
                 var user = await _userService.GetAuthenticatedUserAsync();
 
                 await _authBusinessRules.IsSelectedEntityAvailableAsync(user);

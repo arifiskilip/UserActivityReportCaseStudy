@@ -18,7 +18,7 @@ namespace Persistence.Contexts
             {
                 if (entity.State == EntityState.Modified)
                 {
-                    entity.Entity.UpdatedDate = DateTime.UtcNow;
+                    entity.Entity.UpdatedDate = DateTime.Now;
 
                 }
             }
