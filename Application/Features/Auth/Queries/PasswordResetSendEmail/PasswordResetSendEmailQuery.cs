@@ -33,7 +33,7 @@ namespace Application.Features.Auth.Queries.PasswordResetSendEmail
 
             public async Task<PasswordResetSendEmailResponse> Handle(PasswordResetSendEmailQuery request, CancellationToken cancellationToken)
             {
-                var checkUser = await _userService.GetAuthenticatedUserAsync();
+                var checkUser = await _userService.GetUserByEmailAsync(email:request.Email);
                 await _businessRules.IsSelectedEntityAvailableAsync(checkUser);
 
                 var existingVerificationCode = await _verificationCodeRepository.GetAsync(
