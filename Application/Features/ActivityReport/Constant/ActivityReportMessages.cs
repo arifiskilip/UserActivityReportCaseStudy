@@ -23,5 +23,12 @@
                 return "Kayıtlı bir aktivite türü bulunamadı.";
             }
         }
+        public static string SuccessDeled
+        {
+            get
+            {
+                return "Silme işlemi başarılı!";
+            }
+        }
     }
 }

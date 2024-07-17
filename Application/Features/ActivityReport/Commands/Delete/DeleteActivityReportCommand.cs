@@ -1,4 +1,5 @@
-﻿using Application.Features.ActivityReport.Rules;
+﻿using Application.Features.ActivityReport.Constant;
+using Application.Features.ActivityReport.Rules;
 using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
@@ -34,7 +35,7 @@ namespace Application.Features.ActivityReport.Commands.Delete
                 await _activityReportRepository.DeleteAsync(entity: activityReport);
                 return new()
                 {
-                    Message = "Silme işlemi başarılı!"
+                    Message = ActivityReportMessages.SuccessDeled
                 };
             }
         }
